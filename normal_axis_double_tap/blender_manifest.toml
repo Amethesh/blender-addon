@@ -1,0 +1,18 @@
+schema_version = "1.0.0"
+
+id = "normal_axis_double_tap"
+version = "1.0.0"
+name = "Normal Axis Double Tap"
+tagline = "Double-tap an axis during G/R/S to constrain to Normal"
+maintainer = "Amethesh"
+type = "add-on"
+
+website = "https://github.com/Amethesh/blender-addon"
+
+tags = ["Mesh", "3D View"]
+
+blender_version_min = "4.2.0"
+
+license = [
+  "SPDX:GPL-3.0-or-later",
+]
