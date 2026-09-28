@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 
 id = "normal_axis_double_tap"
-version = "1.0.0"
+version = "1.0.1"
 name = "Normal Axis Double Tap"
 tagline = "Double-tap an axis during G/R/S to constrain to Normal"
 maintainer = "Amethesh"

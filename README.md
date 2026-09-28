@@ -36,6 +36,30 @@ kept.
 > `orient_type` instead leaves the scene alone, so there's nothing to restore
 > on confirm or cancel, and it needs no timers.
 
+### Blender 5.0 and later
+
+Blender 5.0 changed where the cycle starts. When `orient_type` is passed, the
+transform starts on step 2, so the first press only clears the constraint.
+Without a fix, `X` does nothing, `X X` gives Global and `X X X` gives Normal.
+
+To make up for it on 5.x, the add-on adds one hidden **AXIS_X on key release**
+item to the active keyconfig's *Transform Modal Map*. It is switched on only
+while one of this add-on's transforms is waiting for its S/G/R key to be
+released. That release moves the transform to the step before the cycle, so
+`X` = Global and `X X` = Normal again. The item is switched off straight after,
+so stock transforms (UV Editor, Graph Editor, and so on) never see it.
+
+This is **experimental**. Limitations:
+
+- If you press the axis key *before* letting go of S/G/R, that axis press is
+  ignored. Release S/G/R and press the axis again.
+- If Blender stalls so badly that the S/G/R press and its release are handled
+  in the same event-loop pass, the extra step can be missed, and you'll get the
+  shifted behavior for that one transform.
+- It relies on the S/G/R key's release reaching the transform. If you bind the
+  wrapper operators to a mouse button or a key combination, the release step
+  still follows whichever key launched the transform.
+
 ### Known side effect
 
 When `orient_type` is passed, Blender also uses that orientation for an
@@ -90,6 +114,15 @@ Select one face.
 - [ ] `S Z Z` scales along the face normal. `R Z Z` rotates around it.
 - [ ] `G Shift+Z Shift+Z`: plane constraint in Normal space.
 - [ ] `G G` still starts Edge/Vertex Slide.
+
+**Blender 5.x only**
+- [ ] Tap `G`, release it, then press `X`: Global X on the first press.
+- [ ] Hold `G`, press `X`, release `G`: no constraint (the early press is
+      ignored). Pressing `X` again gives Global X.
+- [ ] In the UV Editor, `G X` still gives X on the first press. Stock
+      transforms are unaffected.
+- [ ] In the Keymap preferences under *Transform Modal Map*, the
+      `X Axis`/`G Release` entry appears and is unchecked while idle.
 
 **Header orientation is never changed**
 - [ ] During each transform above, the header dropdown still shows Global.
